@@ -4,21 +4,54 @@ import "./TicTacToeBoard.css";
 const GRID_SIZE = 3;
 
 type CellValue = "X" | "O" | null;
+type WinningLine = number[] | null;
+
+const WINNING_COMBINATIONS = [
+  [0, 1, 2], // Top row
+  [3, 4, 5], // Middle row
+  [6, 7, 8], // Bottom row
+  [0, 3, 6], // Left column
+  [1, 4, 7], // Middle column
+  [2, 5, 8], // Right column
+  [0, 4, 8], // Diagonal \
+  [2, 4, 6], // Diagonal /
+];
 
 export const TicTacToeBoard: React.FC = () => {
   const [cells, setCells] = useState<CellValue[]>(Array(GRID_SIZE * GRID_SIZE).fill(null));
   const [currentPlayer, setCurrentPlayer] = useState<1 | 2>(1);
+  const [winningLine, setWinningLine] = useState<WinningLine>(null);
+
+  const checkWinner = (cellsToCheck: CellValue[]): WinningLine => {
+    for (const combination of WINNING_COMBINATIONS) {
+      const [a, b, c] = combination;
+      if (
+        cellsToCheck[a] &&
+        cellsToCheck[a] === cellsToCheck[b] &&
+        cellsToCheck[a] === cellsToCheck[c]
+      ) {
+        return combination;
+      }
+    }
+    return null;
+  };
 
   const handleCellClick = (index: number) => {
-    if (cells[index] !== null) return; // Cell already filled
+    if (cells[index] !== null || winningLine) return; // Cell already filled or game won
     
     const newCells = [...cells];
     // Player 1 always uses X, Player 2 always uses O
     newCells[index] = currentPlayer === 1 ? "X" : "O";
     setCells(newCells);
     
-    // Toggle player for next turn
-    setCurrentPlayer(currentPlayer === 1 ? 2 : 1);
+    // Check for winner
+    const winner = checkWinner(newCells);
+    if (winner) {
+      setWinningLine(winner);
+    } else {
+      // Toggle player for next turn
+      setCurrentPlayer(currentPlayer === 1 ? 2 : 1);
+    }
   };
 
   const renderShape = (value: CellValue) => {
@@ -44,6 +77,29 @@ export const TicTacToeBoard: React.FC = () => {
     return null;
   };
 
+  const getLineCoordinates = (winLine: WinningLine) => {
+    if (!winLine) return null;
+
+    const cellPositions = winLine.map(index => {
+      const row = Math.floor(index / 3);
+      const col = index % 3;
+      return { row, col };
+    });
+
+    const start = cellPositions[0];
+    const end = cellPositions[2];
+
+    // Calculate percentages for line position
+    const startX = (start.col * 100 / 3) + (100 / 6); // Center of first cell
+    const startY = (start.row * 100 / 3) + (100 / 6); // Center of first cell
+    const endX = (end.col * 100 / 3) + (100 / 6); // Center of last cell
+    const endY = (end.row * 100 / 3) + (100 / 6); // Center of last cell
+
+    return { startX, startY, endX, endY };
+  };
+
+  const lineCoords = getLineCoordinates(winningLine);
+
   return (
     <div className="tictactoe-container">
       <div className="tictactoe-header">
@@ -59,6 +115,19 @@ export const TicTacToeBoard: React.FC = () => {
             {renderShape(value)}
           </div>
         ))}
+        {lineCoords && (
+          <svg className="winning-line" viewBox="0 0 100 100" preserveAspectRatio="none">
+            <line
+              x1={lineCoords.startX}
+              y1={lineCoords.startY}
+              x2={lineCoords.endX}
+              y2={lineCoords.endY}
+              stroke="lightblue"
+              strokeWidth="1"
+              strokeLinecap="round"
+            />
+          </svg>
+        )}
       </div>
     </div>
   );
