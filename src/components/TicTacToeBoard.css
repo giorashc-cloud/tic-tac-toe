@@ -1,4 +1,32 @@
 
+.tictactoe-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  width: 100vw;
+  position: absolute;
+  top: 0;
+  left: 0;
+  --ttt-line-color: #000;
+}
+
+@media (prefers-color-scheme: dark) {
+  .tictactoe-container {
+    --ttt-line-color: #fff;
+  }
+}
+
+.tictactoe-header {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  font-size: 2rem;
+  font-weight: 600;
+  color: var(--ttt-line-color);
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
 .tictactoe-board {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -7,17 +35,7 @@
   height: 80vh;
   max-width: 600px;
   max-height: 600px;
-  margin: auto;
-  position: absolute;
-  top: 0; left: 0; right: 0; bottom: 0;
   box-sizing: border-box;
-  --ttt-line-color: #000;
-}
-
-@media (prefers-color-scheme: dark) {
-  .tictactoe-board {
-    --ttt-line-color: #fff;
-  }
 }
 
 .tictactoe-cell {

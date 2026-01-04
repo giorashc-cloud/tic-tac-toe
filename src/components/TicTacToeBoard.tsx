@@ -7,17 +7,18 @@ type CellValue = "X" | "O" | null;
 
 export const TicTacToeBoard: React.FC = () => {
   const [cells, setCells] = useState<CellValue[]>(Array(GRID_SIZE * GRID_SIZE).fill(null));
-  const [currentShape, setCurrentShape] = useState<"X" | "O">("X");
+  const [currentPlayer, setCurrentPlayer] = useState<1 | 2>(1);
 
   const handleCellClick = (index: number) => {
     if (cells[index] !== null) return; // Cell already filled
     
     const newCells = [...cells];
-    newCells[index] = currentShape;
+    // Player 1 always uses X, Player 2 always uses O
+    newCells[index] = currentPlayer === 1 ? "X" : "O";
     setCells(newCells);
     
-    // Toggle shape for next click
-    setCurrentShape(currentShape === "X" ? "O" : "X");
+    // Toggle player for next turn
+    setCurrentPlayer(currentPlayer === 1 ? 2 : 1);
   };
 
   const renderShape = (value: CellValue) => {
@@ -44,16 +45,21 @@ export const TicTacToeBoard: React.FC = () => {
   };
 
   return (
-    <div className="tictactoe-board">
-      {cells.map((value, idx) => (
-        <div 
-          key={idx} 
-          className="tictactoe-cell"
-          onClick={() => handleCellClick(idx)}
-        >
-          {renderShape(value)}
-        </div>
-      ))}
+    <div className="tictactoe-container">
+      <div className="tictactoe-header">
+        Player {currentPlayer}
+      </div>
+      <div className="tictactoe-board">
+        {cells.map((value, idx) => (
+          <div 
+            key={idx} 
+            className="tictactoe-cell"
+            onClick={() => handleCellClick(idx)}
+          >
+            {renderShape(value)}
+          </div>
+        ))}
+      </div>
     </div>
   );
 };
