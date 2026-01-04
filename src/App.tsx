@@ -1,7 +1,7 @@
 
 
-import { TicTacToeBoard } from "./TicTacToeBoard";
-import "./TicTacToeBoard.css";
+import { TicTacToeBoard } from "./components/TicTacToeBoard";
+import "./components/TicTacToeBoard.css";
 
 function App() {
   return <TicTacToeBoard />;
