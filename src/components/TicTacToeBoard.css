@@ -1,4 +1,3 @@
-
 .tictactoe-container {
   display: flex;
   flex-direction: column;
@@ -19,7 +18,8 @@
 }
 
 .tictactoe-header {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica,
+    Arial, sans-serif;
   font-size: 2rem;
   font-weight: 600;
   color: var(--ttt-line-color);
@@ -73,17 +73,17 @@
   border-top-width: 0;
   border-left-width: 0;
 }
-.tictactoe-cell:nth-child(-n+3) {
+.tictactoe-cell:nth-child(-n + 3) {
   border-top-width: 5px;
 }
-.tictactoe-cell:nth-child(3n+1) {
+.tictactoe-cell:nth-child(3n + 1) {
   border-left-width: 5px;
 }
 .tictactoe-cell {
   border-bottom-width: 2.5px;
   border-right-width: 2.5px;
 }
-.tictactoe-cell:nth-child(n+7) {
+.tictactoe-cell:nth-child(n + 7) {
   border-bottom-width: 5px;
 }
 .tictactoe-cell:nth-child(3n) {
@@ -117,7 +117,8 @@
   padding: 0.75rem 2rem;
   font-size: 1.1rem;
   font-weight: 600;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica,
+    Arial, sans-serif;
   color: var(--ttt-line-color);
   background: transparent;
   border: 2.5px solid var(--ttt-line-color);
