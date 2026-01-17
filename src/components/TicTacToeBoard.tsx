@@ -179,8 +179,8 @@ export const TicTacToeBoard: React.FC = () => {
               y1={lineCoords.startY}
               x2={lineCoords.endX}
               y2={lineCoords.endY}
-              stroke="lightblue"
-              strokeWidth="1"
+              stroke="#FFD700"
+              strokeWidth="1.5"
               strokeLinecap="round"
             />
           </svg>
