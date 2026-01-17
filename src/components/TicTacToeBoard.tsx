@@ -25,6 +25,7 @@ export const TicTacToeBoard: React.FC = () => {
   const [winningLine, setWinningLine] = useState<WinningLine>(null);
   const [winner, setWinner] = useState<1 | 2 | null>(null);
   const [isDraw, setIsDraw] = useState<boolean>(false);
+  const [hoveredCell, setHoveredCell] = useState<number | null>(null);
 
   const checkWinner = (cellsToCheck: CellValue[]): WinningLine => {
     for (const combination of WINNING_COMBINATIONS) {
@@ -65,12 +66,12 @@ export const TicTacToeBoard: React.FC = () => {
     }
   };
 
-  const renderShape = (value: CellValue) => {
+  const renderShape = (value: CellValue, opacity: number = 1) => {
     if (!value) return null;
 
     if (value === 'X') {
       return (
-        <svg className="cell-shape" viewBox="0 0 100 100">
+        <svg className="cell-shape" viewBox="0 0 100 100" style={{ opacity }}>
           <line
             x1="10"
             y1="10"
@@ -95,7 +96,7 @@ export const TicTacToeBoard: React.FC = () => {
 
     if (value === 'O') {
       return (
-        <svg className="cell-shape" viewBox="0 0 100 100">
+        <svg className="cell-shape" viewBox="0 0 100 100" style={{ opacity }}>
           <circle
             cx="50"
             cy="50"
@@ -157,8 +158,14 @@ export const TicTacToeBoard: React.FC = () => {
             key={idx}
             className="tictactoe-cell"
             onClick={() => handleCellClick(idx)}
+            onMouseEnter={() => setHoveredCell(idx)}
+            onMouseLeave={() => setHoveredCell(null)}
           >
-            {renderShape(value)}
+            {value
+              ? renderShape(value)
+              : hoveredCell === idx && !winner && !isDraw
+              ? renderShape(currentPlayer === 1 ? 'X' : 'O', 0.3)
+              : null}
           </div>
         ))}
         {lineCoords && (
