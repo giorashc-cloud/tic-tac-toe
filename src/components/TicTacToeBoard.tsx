@@ -100,6 +100,12 @@ export const TicTacToeBoard: React.FC = () => {
 
   const lineCoords = getLineCoordinates(winningLine);
 
+  const resetGame = () => {
+    setCells(Array(GRID_SIZE * GRID_SIZE).fill(null));
+    setCurrentPlayer(1);
+    setWinningLine(null);
+  };
+
   return (
     <div className="tictactoe-container">
       <div className="tictactoe-header">
@@ -129,6 +135,9 @@ export const TicTacToeBoard: React.FC = () => {
           </svg>
         )}
       </div>
+      <button className="reset-button" onClick={resetGame}>
+        New Game
+      </button>
     </div>
   );
 };
