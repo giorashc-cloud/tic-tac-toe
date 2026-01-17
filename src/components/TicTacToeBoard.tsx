@@ -24,6 +24,7 @@ export const TicTacToeBoard: React.FC = () => {
   const [currentPlayer, setCurrentPlayer] = useState<1 | 2>(1);
   const [winningLine, setWinningLine] = useState<WinningLine>(null);
   const [winner, setWinner] = useState<1 | 2 | null>(null);
+  const [isDraw, setIsDraw] = useState<boolean>(false);
 
   const checkWinner = (cellsToCheck: CellValue[]): WinningLine => {
     for (const combination of WINNING_COMBINATIONS) {
@@ -40,7 +41,7 @@ export const TicTacToeBoard: React.FC = () => {
   };
 
   const handleCellClick = (index: number) => {
-    if (cells[index] !== null || winningLine) return; // Cell already filled or game won
+    if (cells[index] !== null || winningLine || isDraw) return; // Cell already filled or game over
 
     const newCells = [...cells];
     // Player 1 always uses X, Player 2 always uses O
@@ -53,8 +54,14 @@ export const TicTacToeBoard: React.FC = () => {
       setWinningLine(winner);
       setWinner(currentPlayer);
     } else {
-      // Toggle player for next turn
-      setCurrentPlayer(currentPlayer === 1 ? 2 : 1);
+      // Check for draw (all cells filled, no winner)
+      const allCellsFilled = newCells.every((cell) => cell !== null);
+      if (allCellsFilled) {
+        setIsDraw(true);
+      } else {
+        // Toggle player for next turn
+        setCurrentPlayer(currentPlayer === 1 ? 2 : 1);
+      }
     }
   };
 
@@ -132,12 +139,17 @@ export const TicTacToeBoard: React.FC = () => {
     setCurrentPlayer(1);
     setWinningLine(null);
     setWinner(null);
+    setIsDraw(false);
   };
 
   return (
     <div className="tictactoe-container">
       <div className="tictactoe-header">
-        {winner ? `Player ${winner} Wins!` : `Player ${currentPlayer}`}
+        {winner
+          ? `Player ${winner} Wins!`
+          : isDraw
+          ? "It's a Draw!"
+          : `Player ${currentPlayer}`}
       </div>
       <div className="tictactoe-board">
         {cells.map((value, idx) => (
